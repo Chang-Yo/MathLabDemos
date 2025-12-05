@@ -9,5 +9,6 @@ wheels/
 # Virtual environments
 .venv
 img/
-demo-1/py
+demo-1.py
 demo-2.py
+paper.tex
