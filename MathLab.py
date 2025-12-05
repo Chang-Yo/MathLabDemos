@@ -162,7 +162,7 @@ def plot_histogram(
 
     if is_task2:
         # --- 任务 2: U 的分布，应对比标准正态分布 ---
-        filename = f"FrequencyDistro-n_{n}.png"
+        filename = f"FrequencyDistro-mu_{mu2}-n_{n}.png"
 
         # 绘制标准正态分布的 PDF
         x = np.linspace(min(data), max(data), 100)
@@ -249,25 +249,22 @@ def main_task1():
 
     # --- 扩展后的参数设定（共 8 组） ---
     parameter_sets = [
-        # 原有参数组 1: 基础情况，高斯相近，混合比例适中
-        {"mu1": 0, "sigma1": 1.0, "mu2": 2, "sigma2": 1.0, "p": 0.5},
-        # 原有参数组 2: 高斯分布差异较大，混合比例偏向 X (p=0.1)
-        {"mu1": 5, "sigma1": 0.5, "mu2": -3, "sigma2": 2.0, "p": 0.1},
-        # 原有参数组 3: 高斯分布接近，混合比例偏向 X+Y (p=0.9)，方差变化
-        {"mu1": 0, "sigma1": 1.0, "mu2": 0, "sigma2": 3.0, "p": 0.9},
-        # 新增参数组 4: 极低 p 值 (p=0.01)，分布接近 N(mu1, sigma1^2)
-        {"mu1": 10, "sigma1": 1.0, "mu2": 0, "sigma2": 1.0, "p": 0.01},
-        # 新增参数组 5: 极高 p 值 (p=0.99)，分布接近 N(mu1+mu2, sigma1^2+sigma2^2)
-        {"mu1": -5, "sigma1": 0.5, "mu2": 10, "sigma2": 1.5, "p": 0.99},
-        # 新增参数组 6: 均值相等 (双峰可能不明显)，方差差异巨大，p 适中
-        {"mu1": 0, "sigma1": 0.5, "mu2": 0, "sigma2": 5.0, "p": 0.5},
-        # 新增参数组 7: 均值差异中等，两个高斯分布的方差差异巨大
-        {"mu1": 0, "sigma1": 0.1, "mu2": 5, "sigma2": 2.0, "p": 0.5},
-        # 新增参数组 8: 两个高斯分布完全相同 (Y ~ N(0,0)，即 Y=0)，Z = X
-        # 注意：设置 sigma2=0.0 意味着 Y 恒为 mu2，此时 Z = X + eta*mu2
-        {"mu1": 0, "sigma1": 1.0, "mu2": 0, "sigma2": 0.0, "p": 0.5},
-        # 新增参数组 9
-        {"mu1": 0, "sigma1": 1.0, "mu2": 4, "sigma2": 1, "p": 0.5},
+        # 控制mu_1增大
+        {"mu1": 1, "sigma1": 1, "mu2": 0, "sigma2": 1, "p": 0.5},
+        {"mu1": 2, "sigma1": 1, "mu2": 0, "sigma2": 1, "p": 0.5},
+        {"mu1": 4, "sigma1": 1, "mu2": 0, "sigma2": 1, "p": 0.5},
+        # 控制mu_2增大
+        {"mu1": 0, "sigma1": 1, "mu2": 0, "sigma2": 1, "p": 0.5},
+        {"mu1": 0, "sigma1": 1, "mu2": 2, "sigma2": 1, "p": 0.5},
+        {"mu1": 0, "sigma1": 1, "mu2": 4, "sigma2": 1, "p": 0.5},
+        # 减小 sigma_1 和 sigma_2
+        {"mu1": 0, "sigma1": 1, "mu2": 4, "sigma2": 0.5, "p": 0.5},
+        {"mu1": 0, "sigma1": 0.5, "mu2": 4, "sigma2": 1, "p": 0.5},
+        {"mu1": 0, "sigma1": 0.5, "mu2": 4, "sigma2": 0.5, "p": 0.5},
+        # 改变 p
+        {"mu1": 0, "sigma1": 1, "mu2": 5, "sigma2": 1, "p": 0.2},
+        {"mu1": 0, "sigma1": 1, "mu2": 5, "sigma2": 1, "p": 0.5},
+        {"mu1": 0, "sigma1": 1, "mu2": 5, "sigma2": 1, "p": 0.7},
     ]
 
     print("--- Starting Task 1: Mixed Gaussian Generation and Plotting ---")
@@ -302,46 +299,53 @@ def main_task2():
     # --- 选择用于任务 2 的一组参数 ---
     # 通常选用一个能体现非正态分布特征的参数集，我们使用第一组：
     # 理论上，此参数集 Z 的分布是双峰或偏斜的 (取决于 mu1, mu2 差异和 p)
-    params = {"mu1": 0, "sigma1": 1.0, "mu2": 4, "sigma2": 1, "p": 0.5}
-
-    mu1 = params["mu1"]
-    sigma1 = params["sigma1"]
-    mu2 = params["mu2"]
-    sigma2 = params["sigma2"]
-    p = params["p"]
-
-    EZ, DZ = calculate_ez_dz(mu1, sigma1, mu2, sigma2, p)
+    parameter_sets = [
+        {"mu1": 0, "sigma1": 1, "mu2": 2, "sigma2": 1, "p": 0.5},
+        {"mu1": 0, "sigma1": 1, "mu2": 5, "sigma2": 1, "p": 0.5},
+        {"mu1": 0, "sigma1": 1, "mu2": 10, "sigma2": 1, "p": 0.5},
+    ]
+    # params = {"mu1": 0, "sigma1": 1, "mu2": 10, "sigma2": 1, "p": 0.5}
 
     print("\n--- Starting Task 2: Central Limit Theorem Verification ---")
-    print(f"Base Z Parameters: E[Z]={EZ:.4f}, D[Z]={DZ:.4f}")
 
-    # --- n 的取值要求 ---
-    n_values = [2, 3, 4, 5, 10, 20, 50, 100, 5000]
+    for params in parameter_sets:
+        mu1 = params["mu1"]
+        sigma1 = params["sigma1"]
+        mu2 = params["mu2"]
+        sigma2 = params["sigma2"]
+        p = params["p"]
 
-    for n in n_values:
-        print(f"Processing n={n}...")
+        EZ, DZ = calculate_ez_dz(mu1, sigma1, mu2, sigma2, p)
 
-        # 1. 生成 1000 个 U 值
-        U_distro = generate_u_distro(mu1, sigma1, mu2, sigma2, p, n)
+        print(f"Base Z Parameters: E[Z]={EZ:.4f}, D[Z]={DZ:.4f}")
 
-        # 只有在成功生成数据时才绘图
-        if len(U_distro) > 0:
-            # 2. 绘制频率分布直方图并保存
-            # 传入 Task 2 特定的参数 n，以及 Task 1 的参数用于标注
-            plot_histogram(
-                U_distro,
-                OUTPUT_DIR,
-                mu1=mu1,
-                sigma1=sigma1,
-                mu2=mu2,
-                sigma2=sigma2,
-                p=p,
-                n=n,
-            )
+        # --- n 的取值要求 ---
+        n_values = [2, 3, 4, 5, 10, 20, 50, 100, 5000]
+
+        for n in n_values:
+            print(f"Processing n={n}...")
+
+            # 1. 生成 1000 个 U 值
+            U_distro = generate_u_distro(mu1, sigma1, mu2, sigma2, p, n)
+
+            # 只有在成功生成数据时才绘图
+            if len(U_distro) > 0:
+                # 2. 绘制频率分布直方图并保存
+                # 传入 Task 2 特定的参数 n，以及 Task 1 的参数用于标注
+                plot_histogram(
+                    U_distro,
+                    OUTPUT_DIR,
+                    mu1=mu1,
+                    sigma1=sigma1,
+                    mu2=mu2,
+                    sigma2=sigma2,
+                    p=p,
+                    n=n,
+                )
 
     print("--- Task 2 Completed ---")
 
 
 if __name__ == "__main__":
-    main_task1()
+    # main_task1()
     main_task2()

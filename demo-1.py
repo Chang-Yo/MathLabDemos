@@ -1,10 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# --- Matplotlib 中文支持设置 ---
-# 尝试设置字体为 WenQuanYi Micro Hei（许多Linux/WSL默认自带）
-# 如果这个字体不存在，可能需要安装 ttf-wqy-microhei 包
-
 plt.rcParams["font.sans-serif"] = ["WenQuanYi Micro Hei"]
 
 plt.rcParams["axes.unicode_minus"] = False  # 解决负号 '-' 显示为方块的问题

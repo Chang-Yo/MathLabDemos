@@ -1,32 +1,28 @@
-# 任务1
-已知$X \sim N(\mu_1,\sigma_1^2), Y\sim N(\mu_2,\sigma_2^2), Z\sim X+\eta Y$
-其中$\eta$的分布列如下：
+# 用于研究一维混合高斯分布与中心极限定理的收敛性的Python数值模拟程序
+本程序通过Python数值模拟来完成`Problem.md`中的探究性问题。主要是两个方面的研究：
+1. 一维混合高斯分布中的**衍射峰**现象
+2. 中心极限定理的收敛性规律
 
-|$\eta$|0|1|
-|-|-|-|
-|$P$|$1-p$|$p$|
+# 快速开始
+请确保你的环境中安装了Python并且>=3.11版本。
 
-先要求如下：
-1. 你需要自己设定不同的参数$\mu_1, \sigma_1^2,\mu_2,\sigma_2^2,p$，分别生成5000个混合高斯分布的随机数；
-2. 画出其频率分布直方图
+这里推荐使用UV来进行包管理，请前往[UV官网](https://docs.astral.sh/uv/guides/install-python/)安装
 
-注意：对于每一组设定的参数，你都需要将生成的图像保存下来，并且输出到项目根目录的`img/`文件夹下面，命名格式为`<mu_1>-<sigma_1>-<mu_2>-<sigma_2>-<p>.png`，`<*>`中的是具体的数值。
+将项目克隆后，运行以下命令完成环境的安装:
+```bash
+uv sync
+```
+uv安装好对应的依赖后，可以将编辑器的Python解释器指定为项目虚拟环境中的Python解释器
 
-请注意你代码的结构化风格，可拓展性和可读性。
+你可以通过`source .venv/bin/activate`来激活虚拟环境并运行脚本，也可以通过uv直接运行:
+```bash
+uv run Mathlab.py
+```
+稍后，你可以在`/img/`中看到图像输出
 
-项目已经安装所需要的`matplotlib`,`numpy`等常见的库。
+# 如何自定义参数
+在`MathLab.py`中的`main_task1()`和`main_task2()`中都存在一个数组`parameter_sets`，你可以直接修改里面的参数数组来进行自定义。项目初始已经分别设定了12组和3组参数。
 
-# 任务2
-对应自己设定的参数，$EZ,DZ$是混合高斯分布的期望和方差（注意：不是样本均值和样本方差）。通过生成1000组（每组$n$个）混合高斯分布的随机数$Z_{i,j}$(第i组第j个)，分别计算：
-$$
-U_1=\frac{1}{\sqrt{nDZ}}\left\{\sum_{j=1}^{n}Z_{1,j}-nE(Z)\right\} \\
-U_2=\frac{1}{\sqrt{nDZ}}\left\{\sum_{j=1}^{n}Z_{2,j}-nE(Z)\right\} \\
-U_3=\frac{1}{\sqrt{nDZ}}\left\{\sum_{j=1}^{n}Z_{3,j}-nE(Z)\right\} \\
-\vdots \\
-U_{1000}=\frac{1}{\sqrt{nDZ}}\left\{\sum_{j=1}^{n}Z_{1000,j}-nE(Z)\right\};
-$$
-
-要求：
-1. 当$n$分别取2,3,4,5,10,20,50,100,5000时，分别画出$U_1,U_2,...U_{1000}$的频率分布直方图；
-
-注意：对于$n$的每一个取值，都应该把对应的图像保存下来，输出目录为项目根目录下的`img/`,命名格式为：`FrequencyDistro-n_<num>`,其中`<num>`中的num是n的取值。
+联系作者：
+邮箱：[running_stream@sjtu.edu.cn](mailto:running_stream@sjtu.edu.cn)
+个人主页：[ChangYo's Blog](https://chang-yo.github.io)
